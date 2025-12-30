@@ -3765,6 +3765,9 @@ const docTemplate = `{
                 "created_at": {
                     "type": "string"
                 },
+                "is_first_message": {
+                    "type": "boolean"
+                },
                 "message": {
                     "$ref": "#/definitions/chat.Message"
                 },

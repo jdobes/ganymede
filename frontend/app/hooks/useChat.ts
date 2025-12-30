@@ -37,6 +37,7 @@ export interface Comment {
   state: string;
   message: Message;
   more_replies: boolean;
+  is_first_message: boolean;
   // format complex object into simpler ones for rendering
   ganymede_formatted_badges: GanymedeFormattedBadge[];
   ganymede_formatted_message: GanymedeFormattedMessageFragment[];

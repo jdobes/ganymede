@@ -96,6 +96,7 @@ type Comment struct {
 	State                State       `json:"state"`
 	Message              Message     `json:"message"`
 	MoreReplies          bool        `json:"more_replies"`
+	IsFirstMessage       bool        `json:"is_first_message"`
 }
 
 type Commenter struct {

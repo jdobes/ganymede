@@ -50,6 +50,7 @@ type Message struct {
 	Body             string          `json:"body"`
 	BitsSpent        int             `json:"bits_spent"`
 	Fragments        []Fragment      `json:"fragments"`
+	IsFirstMessage   bool            `json:"is_first_message"`
 	UserBadges       []UserBadge     `json:"user_badges"`
 	UserColor        string          `json:"user_color"`
 	UserNoticeParams UserNoticParams `json:"user_notice_params"`
@@ -122,6 +123,7 @@ func ConvertTwitchLiveChatToTDLChat(path string, outPath string, channelName str
 					Pos2:     0,
 				},
 			},
+			IsFirstMessage: false,
 			UserBadges: []UserBadge{},
 			UserColor:  "#a65ee8",
 			UserNoticeParams: UserNoticParams{
@@ -160,6 +162,7 @@ func ConvertTwitchLiveChatToTDLChat(path string, outPath string, channelName str
 			Message: Message{
 				Body:       liveComment.Message,
 				BitsSpent:  0,
+				IsFirstMessage: liveComment.IsFirstMessage,
 				UserBadges: []UserBadge{},
 				UserColor:  liveComment.Colour,
 				UserNoticeParams: UserNoticParams{
