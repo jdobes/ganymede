@@ -86,6 +86,7 @@ export interface Message {
   bits_spent: string;
   fragments: Fragment[];
   is_action: boolean;
+  is_first_message: boolean;
   user_badges: UserBadge[];
   user_color: string;
   user_notice_params: UserNoticeParams;

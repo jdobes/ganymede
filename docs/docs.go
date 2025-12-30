@@ -3951,6 +3951,9 @@ const docTemplate = `{
                 "is_action": {
                     "type": "boolean"
                 },
+                "is_first_message": {
+                    "type": "boolean"
+                },
                 "user_badges": {
                     "type": "array",
                     "items": {

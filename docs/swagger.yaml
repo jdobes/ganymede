@@ -175,6 +175,8 @@ definitions:
         type: array
       is_action:
         type: boolean
+      is_first_message:
+        type: boolean
       user_badges:
         items:
           $ref: "#/definitions/chat.UserBadge"

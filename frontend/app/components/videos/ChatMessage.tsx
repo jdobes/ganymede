@@ -9,7 +9,7 @@ interface Params {
 
 const ChatMessage = ({ comment }: Params) => {
   return (
-    <div key={comment._id} className={classes.chatMessage}>
+    <div key={comment._id} className={classes.chatMessage} style={comment.message.is_first_message ? { backgroundColor: "crimson" } : {}}>
       {/* badges */}
       <span>
         {comment.ganymede_formatted_badges &&
