@@ -24,7 +24,7 @@ import (
 )
 
 const (
-	sigintTimout = 300 * time.Second
+	sigtermTimeout = 30 * time.Second
 )
 
 // DownloadTwitchVideo downloads a Twitch video.
@@ -251,7 +251,7 @@ func DownloadTwitchLiveVideo(ctx context.Context, video ent.Vod, channel ent.Cha
 		"-dn",
 		"-ignore_unknown",
 		"-c", "copy",
-		"-movflags", "+faststart+frag_keyframe+empty_moov+default_base_moof",
+		"-movflags", "+faststart",
 	}
 
 	// Decide archive format.
@@ -286,8 +286,6 @@ func DownloadTwitchLiveVideo(ctx context.Context, video ent.Vod, channel ent.Cha
 				"-hls_list_size", "0",
 				"-hls_playlist_type", "event",
 				"-hls_flags", "append_list+independent_segments",
-				"-c:v", "copy",
-				"-c:a", "copy",
 				"-hls_segment_filename", segmentPattern,
 				"-f", "hls",
 				playlistPath,
@@ -337,21 +335,20 @@ func DownloadTwitchLiveVideo(ctx context.Context, video ent.Vod, channel ent.Cha
 
 	// Wait for the command to finish or for ctx cancellation.
 	// When ctx is cancelled, allow ffmpeg to handle a graceful shutdown first:
-	// send SIGINT to the process group, wait up to sigintTimout, then SIGKILL
+	// send SIGTERM to the process group, wait up to sigtermTimeout, then SIGKILL
 	select {
 	case <-ctx.Done():
 		if cmd.Process != nil {
-			err = syscall.Kill(-cmd.Process.Pid, syscall.SIGINT)
+			err = syscall.Kill(-cmd.Process.Pid, syscall.SIGTERM)
 			if err != nil {
-				log.Error().Err(err).Msg("failed to send SIGINT to ffmpeg process")
+				log.Error().Err(err).Msg("failed to send SIGTERM to ffmpeg process")
 			}
 		}
 		select {
 		case <-done:
-			// exited after SIGINT
-		case <-time.After(sigintTimout):
+			// exited after SIGTERM
+		case <-time.After(sigtermTimeout):
 			if cmd.Process != nil {
-				log.Warn().Msg("ffmpeg process did not exit after SIGINT, sending SIGKILL")
 				err = syscall.Kill(-cmd.Process.Pid, syscall.SIGKILL)
 				if err != nil {
 					log.Error().Err(err).Msg("failed to send SIGKILL to ffmpeg process")
